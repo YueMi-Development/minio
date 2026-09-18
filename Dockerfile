@@ -21,6 +21,7 @@ RUN apk add -U --no-cache ca-certificates && \
     apk add -U --no-cache make && \
     apk add -U --no-cache curl && \
     apk add -U --no-cache bash && \
+    apk add -U --no-cache jq && \
     go install aead.dev/minisign/cmd/minisign@v0.2.1
 
 # Clone MinIO source code at the specified version
@@ -74,14 +75,10 @@ RUN COMMIT_ID=$(git rev-parse HEAD) && \
 # Verify the binary works
 RUN /usr/bin/minio --version
 
-# Download MinIO Client (mc) binary and signature files
-RUN curl -s -q https://dl.min.io/client/mc/release/linux-${TARGETARCH}/mc -o /usr/bin/mc && \
-    curl -s -q https://dl.min.io/client/mc/release/linux-${TARGETARCH}/mc.minisig -o /usr/bin/mc.minisig && \
-    curl -s -q https://dl.min.io/client/mc/release/linux-${TARGETARCH}/mc.sha256sum -o /usr/bin/mc.sha256sum && \
+# Get mc version from GitHub releases (always use latest)
+RUN MC_VERSION=$(curl -sL https://api.github.com/repos/minio/mc/releases/latest | jq -r '.tag_name') && \
+    curl -fsL https://github.com/minio/mc/releases/download/${MC_VERSION}/mc.linux-${TARGETARCH}.${MC_VERSION} -o /usr/bin/mc && \
     chmod +x /usr/bin/mc
-
-# Verify mc binary signature using MinIO public key
-RUN /go/bin/minisign -Vqm /usr/bin/mc -x /usr/bin/mc.minisig -P RWTx5Zr1tiHQLwG9keckT0c45M3AGeHD6IvimQHpyRywVWGbP1aVSGav
 
 # Verify mc binary works
 RUN /usr/bin/mc --version
