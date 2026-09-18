@@ -2,17 +2,15 @@
 
 Automated builds of [MinIO](https://github.com/minio/minio) Docker images from official releases.
 
-Since MinIO stopped providing pre-built Docker images for new releases, this repository automatically builds and publishes them to both GitHub Container Registry and Docker Hub.
+Since MinIO stopped providing pre-built Docker images for new releases, this repository automatically builds and publishes them to GitHub Container Registry (GHCR).
 
 > If you need a specific version / release, open an issue. I (Andras) will make it available.
 
 ## Available Images
 
-Images are available at:
-
 **GitHub Container Registry (GHCR):**
 ```
-ghcr.io/yuemi-development/minio:<tag>
+ghcr.io/YueMi-Development/minio:<tag>
 ```
 
 ### Tags
@@ -26,12 +24,11 @@ ghcr.io/yuemi-development/minio:<tag>
 ### Basic Usage
 
 ```bash
-# Using Docker Hub (simpler, no authentication needed)
 docker run -p 9000:9000 -p 9001:9001 \
   -e MINIO_ROOT_USER=minioadmin \
   -e MINIO_ROOT_PASSWORD=minioadmin \
   -v /path/to/data:/data \
-  ghcr.io/yuemi-development/minio:latest \
+  ghcr.io/YueMi-Development/minio:latest \
   server /data --console-address ":9001"
 ```
 
@@ -42,7 +39,7 @@ version: '3.8'
 
 services:
   minio:
-    image: ghcr.io/yuemi-development/minio:latest
+    image: ghcr.io/YueMi-Development/minio:latest
     container_name: minio
     ports:
       - "9000:9000"
