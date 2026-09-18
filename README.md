@@ -12,14 +12,7 @@ Images are available at:
 
 **GitHub Container Registry (GHCR):**
 ```
-ghcr.io/coollabsio/minio:<tag>
-```
-
-**Docker Hub:**
-```
-docker.io/coollabsio/minio:<tag>
-# or simply
-coollabsio/minio:<tag>
+ghcr.io/yuemi-development/minio:<tag>
 ```
 
 ### Tags
@@ -38,15 +31,7 @@ docker run -p 9000:9000 -p 9001:9001 \
   -e MINIO_ROOT_USER=minioadmin \
   -e MINIO_ROOT_PASSWORD=minioadmin \
   -v /path/to/data:/data \
-  coollabsio/minio:latest \
-  server /data --console-address ":9001"
-
-# Or using GitHub Container Registry
-docker run -p 9000:9000 -p 9001:9001 \
-  -e MINIO_ROOT_USER=minioadmin \
-  -e MINIO_ROOT_PASSWORD=minioadmin \
-  -v /path/to/data:/data \
-  ghcr.io/coollabsio/minio:latest \
+  ghcr.io/yuemi-development/minio:latest \
   server /data --console-address ":9001"
 ```
 
@@ -57,7 +42,7 @@ version: '3.8'
 
 services:
   minio:
-    image: coollabsio/minio:latest
+    image: ghcr.io/yuemi-development/minio:latest
     container_name: minio
     ports:
       - "9000:9000"
